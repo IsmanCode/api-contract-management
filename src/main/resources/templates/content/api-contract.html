@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}">
+<body>
+<div class="container-fluid" layout:fragment="content">
+
+  <!-- Page Heading -->
+  <div class="d-sm-flex align-items-center justify-content-between mb-4">
+    <h1 class="h3 mb-0 text-gray-800">Dashboard</h1>
+    <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+            class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+  </div>
+
+  <!-- Content Row -->
+  <div class="row">
+    <!-- DataTables Example -->
+    <div class="card mb-3 pull-right">
+      <div class="card-header pull-right">
+        <div class="pull-right">
+          <a class="btn btn-success" th:href="@{/backoffice/archive/add}">
+            <i class="fas fa-plus"></i> Add
+          </a>
+        </div>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="apiContractDatatable" width="100%" cellspacing="0">
+            <thead>
+            <tr>
+              <th class="text-center">ID</th>
+              <th class="text-center">Division</th>
+              <th class="text-center">Team</th>
+              <th class="text-center">Name</th>
+              <th class="text-center">Version</th>
+              <th class="text-center">Status</th>
+              <th class="text-center">Create At</th>
+              <th class="text-center">Updated At</th>
+              <th class="text-center">Create By</th>
+              <th class="text-center">Updated By</th>
+              <th  class="text-center" colspan="2">Action</th>
+            </tr>
+            </thead>
+            <tfoot>
+            </tfoot>
+            <tbody>
+            </tbody>
+          </table>
+        </div>
+      </div>
+      <div class="card-footer small text-muted">Updated yesterday at 11:59 PM</div>
+    </div>
+  </div>
+
+</div>
+
+<section layout:fragment="body-end">
+
+  <script th:inline="javascript">
+
+    let contextPath = '[[${contextPath}]]';
+    let uriApi = '/api-contract/datatables';
+    let urlApi = contextPath + uriApi;
+    let uri = '/api-contract'
+    let url = contextPath + uri;
+    $(document).ready(function () {
+      $('#apiContractDatatable').DataTable({
+        "processing": true,
+        "serverSide": true,
+        "searching": true,
+        'paging': true,
+        'lengthChange': true,
+        'ordering': true,
+        'info': true,
+        'autoWidth': false,
+        "ajax": {
+
+          "url": urlApi ,
+          "type": "GET",
+          "contentType": "application/json",
+          "data": function (d) {
+            d.datatables = true;
+          }
+        },
+        "columns": [
+          {"data": "id"},
+          {"data": "division", "defaultContent": ""},
+          {"data": "team", "defaultContent": ""},
+          {"data": "name", "defaultContent": ""},
+          {"data": "version", "defaultContent": ""},
+          {"data": "createAt", "defaultContent": ""},
+          {"data": "updatedAt", "defaultContent": ""},
+          {"data": "createBy", "defaultContent": ""},
+          {"data": "updatedBy", "defaultContent": ""},
+          {"data": "id"},
+          {"data": "id"}
+        ],
+        "columnDefs": [
+          {
+            "targets": 9,
+            "data": "id",
+            "mRender": function (data, type, row) {
+              html = "";
+
+              html += '<a class="btn btn-info" href="'+url+'/update/' + row.id + '"><i class="fas fa-edit"></a>';
+              return html;
+            }
+          },
+          {
+            "targets": 10,
+            "data": "id",
+            "mRender": function (data, type, row) {
+              html = "";
+
+              html += '<a class="btn btn-danger" href="'+url+'/delete/' + row.id + '"><i class="fas fa-trash"></a>';
+              return html;
+            }
+          },
+
+        ]
+      });
+    });
+  </script>
+</section>
+
+</body>
+</html>

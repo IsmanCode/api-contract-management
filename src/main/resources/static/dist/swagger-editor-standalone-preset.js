@@ -37536,8 +37536,8 @@
                     key: "2"
                 }, O.createElement("button", {
                     type: "button",
-                    id:"saveToDb",
-                    onClick: this.saveToDb
+                    id:"saveToDb"
+                    // onClick: this.saveToDb
                     // onClick: this.saveToDb
                 }, "Save To Database"))], O.createElement("li", {
                     role: "separator"
