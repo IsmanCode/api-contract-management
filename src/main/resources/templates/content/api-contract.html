@@ -18,22 +18,22 @@
         <div class="card mb-3 pull-right">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-bordered" id="apiContractDatatable">
+                    <table class="table table-hover" id="apiContractDatatable">
                         <thead>
                         <tr>
-                            <th class="text-center">No</th>
-                            <th class="text-center">Action</th>
-                            <th class="text-center">Division</th>
-                            <th class="text-center">Team</th>
-                            <th class="text-center">Project</th>
-                            <th class="text-center">Name</th>
-                            <th class="text-center">Revision</th>
-                            <th class="text-center">Version</th>
-                            <th class="text-center">Status</th>
-                            <th class="text-center">Create At</th>
-                            <th class="text-center">Updated At</th>
-                            <th class="text-center">Create By</th>
-                            <th class="text-center">Updated By</th>
+                            <th scope="col" class="text-center">Action</th>
+                            <th scope="col" class="text-center">No</th>
+                            <th scope="col" class="text-center">Division</th>
+                            <th scope="col" class="text-center">Team</th>
+                            <th scope="col" class="text-center">Project</th>
+                            <th scope="col" class="text-center">Name</th>
+                            <th scope="col" class="text-center">Revision</th>
+                            <th scope="col" class="text-center">Version</th>
+                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center">Create At</th>
+                            <th scope="col" class="text-center">Updated At</th>
+                            <th scope="col" class="text-center">Create By</th>
+                            <th scope="col" class="text-center">Updated By</th>
                         </tr>
                         </thead>
                         <tfoot>
@@ -55,7 +55,6 @@
 
         /*<![CDATA[*/
          var confirmation = (urlApi) => {
-             console.log('urlApi: ' + urlApi);
             Swal.fire({
                 title: "Confirm Save To Database",
                 showCancelButton: true,
@@ -78,9 +77,7 @@
                 },
                 allowOutsideClick: () => !Swal.isLoading()
             }).then((result) => {
-                console.log('test swal');
                 if (result.isConfirmed) {
-                    console.log('status: ' + result.value.status);
                     if (result.value.status === 200 || result.value.status === 201) {
                         Swal.fire({
                             title:"Success",
@@ -135,13 +132,13 @@
                 }
             },
             "columns": [
+                {"data": "id"},
                 {
                     "data": "id",
                     render: function (data, type, row, meta) {
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                {"data": "id"},
                 {"data": "divisionTitle", "defaultContent": ""},
                 {"data": "teamTitle", "defaultContent": ""},
                 {"data": "projectTitle", "defaultContent": ""},
@@ -160,7 +157,7 @@
                     "defaultContent": ""
                 },
                 {
-                    "targets": 1,
+                    "targets": 0,
                     "data": "id",
                     "mRender": function (data, type, row) {
                         html = '<div class="btn-group btn-group-sm dropright">';
@@ -182,11 +179,10 @@
                     "data": "status",
                     "mRender": function (data, type, row) {
                         html = '';
-                        console.log('id: ' + row.id + ' status: ' + row.status);
                         if (row.status === 'PUBLISHED') {
                             html += '<button class="btn btn-success btn-sm"> Published </button>';
                         } else {
-                            html += '<button class="btn btn-warning btn-sm" onclick="confirmation(' +'\'' + publishUrl + '/' + row.id + '\'' + ')"> Go Publish </button>';
+                            html += '<button class="btn btn-warning btn-sm" onclick="confirmation(' +'\'' + publishUrl + '/' + row.id + '\'' + ')">GoPublish</button>';
                         }
 
                         return html;

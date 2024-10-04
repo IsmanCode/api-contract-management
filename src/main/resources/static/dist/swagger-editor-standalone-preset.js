@@ -37372,9 +37372,7 @@
                         },
                         allowOutsideClick: () => !Swal.isLoading()
                     }).then((result) => {
-                        console.log('test swal');
                         if (result.isConfirmed) {
-                            console.log('status: ' + result.value.status);
                             if (result.value.status === 200 || result.value.status === 201) {
                                 Swal.fire({
                                     title:"Success",
@@ -37485,7 +37483,6 @@
                 }, (() => this.instantiateGeneratorClient()))
             }
             render() {
-                console.log('render');
                 var e, t;
                 let {
                     getComponent: n,

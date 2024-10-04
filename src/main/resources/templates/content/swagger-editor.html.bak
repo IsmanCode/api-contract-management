@@ -84,7 +84,6 @@
 
             window.editor = editor
             let openApiSpec = document.getElementById('swaggerSpec').value;
-            // console.log('openApiSpec: ' + openApiSpec);
             localStorage.clear;
             localStorage.setItem("swagger-editor-content",openApiSpec );
 
@@ -94,7 +93,6 @@
         var contextPath = '[[${contextPath}]]';
         var pageName = contextPath + '/swagger-store';
         var urlSever = baseLink + pageName;
-        console.log('urlSever: ' + urlSever);
 
         var confirmSave = function () {
             Swal.fire({
