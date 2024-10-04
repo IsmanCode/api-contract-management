@@ -38,11 +38,12 @@ public class SwaggerEditorController {
 
         String yamlSpec = ObjectMapperUtil.convertJsonToYaml(jsonSpec);
         Map<String,Object> params = new HashMap<>();
+        params.put("id",id);
         params.put("swaggerEditorSpec",yamlSpec);
         params.put("contextPath",contextPath);
         modelAndView.addAllObjects(params);
         log.debug("contextPath: {}", contextPath);
         return modelAndView;
     }
-    
+
 }

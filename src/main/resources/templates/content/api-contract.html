@@ -29,6 +29,7 @@
                             <th class="text-center">Name</th>
                             <th class="text-center">Revision</th>
                             <th class="text-center">Version</th>
+                            <th class="text-center">Status</th>
                             <th class="text-center">Create At</th>
                             <th class="text-center">Updated At</th>
                             <th class="text-center">Create By</th>
@@ -50,6 +51,56 @@
 
 <section layout:fragment="body-end">
 
+    <script>
+
+        /*<![CDATA[*/
+         var confirmation = (urlApi) => {
+             console.log('urlApi: ' + urlApi);
+            Swal.fire({
+                title: "Confirm Save To Database",
+                showCancelButton: true,
+                confirmButtonText: "Confirm",
+                showLoaderOnConfirm: true,
+                preConfirm: async () => {
+                    try {
+                        const myHeaders = new Headers();
+                        myHeaders.append("Content-Type", "application/json");
+                        const response = await fetch(urlApi, {
+                            method: "PATCH",
+                            headers: myHeaders,
+                        });
+                        return response;
+                    } catch (error) {
+                        Swal.showValidationMessage(`
+                                    Request failed: ${error}
+                                  `);
+                    }
+                },
+                allowOutsideClick: () => !Swal.isLoading()
+            }).then((result) => {
+                console.log('test swal');
+                if (result.isConfirmed) {
+                    console.log('status: ' + result.value.status);
+                    if (result.value.status === 200 || result.value.status === 201) {
+                        Swal.fire({
+                            title:"Success",
+                            icon:"success"
+                        }).then(() => {
+                            apiContractDatatable.ajax.reload();
+                        })
+                    } else {
+                        Swal.fire({
+                            title:"Failed",
+                            icon:"failed"
+                        })
+                    }
+                }
+            });
+        }
+
+        /*]]>*/
+    </script>
+
     <script th:inline="javascript">
         /*<![CDATA[*/
 
@@ -60,66 +111,93 @@
         let url = contextPath + uri;
         let urlSwagger = contextPath + '/swagger-ui';
         let urlSwaggerEditor = contextPath + '/swagger-editor';
-        $(document).ready(function () {
-            $('#apiContractDatatable').DataTable({
-                "processing": true,
-                "serverSide": true,
-                "searching": true,
-                'paging': true,
-                'lengthChange': true,
-                'ordering': true,
-                'info': true,
-                'autoWidth': true,
-                "ajax": {
+        let publishUrl = contextPath + '/api/api-contract/publish';
+        var apiContractDatatable = $('#apiContractDatatable').DataTable({
+            "processing": true,
+            "serverSide": true,
+            "searching": true,
+            "paging": true,
+            "lengthChange": true,
+            "ordering": true,
+            "info": true,
+            "autoWidth": true,
+            "responsive": true,
+            "language": {
+                "infoEmpty": "No records available",
+            },
+            "ajax": {
 
-                    "url": urlApi,
-                    "type": "GET",
-                    "contentType": "application/json",
-                    "data": function (d) {
-                        d.datatables = true;
+                "url": urlApi,
+                "type": "GET",
+                "contentType": "application/json",
+                "data": function (d) {
+                    d.datatables = true;
+                }
+            },
+            "columns": [
+                {
+                    "data": "id",
+                    render: function (data, type, row, meta) {
+                        return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                "columns": [
-                    {
-                        "data": "id",
-                        render: function (data, type, row, meta) {
-                            return meta.row + meta.settings._iDisplayStart + 1;
-                        }
-                    },
-                    {"data": "id"},
-                    {"data": "divisionTitle", "defaultContent": ""},
-                    {"data": "teamTitle", "defaultContent": ""},
-                    {"data": "projectTitle", "defaultContent": ""},
-                    {"data": "name", "defaultContent": ""},
-                    {"data": "revision", "defaultContent": ""},
-                    {"data": "version", "defaultContent": ""},
-                    {"data": "createdDate", "defaultContent": ""},
-                    {"data": "updatedDate", "defaultContent": ""},
-                    {"data": "createdBy", "defaultContent": ""},
-                    {"data": "updatedBy", "defaultContent": ""},
-                ],
-                "columnDefs": [
-                    {
-                        "targets": 1,
-                        "data": "id",
-                        "mRender": function (data, type, row) {
-                            html = '<div class="btn-group btn-group-sm dropright">';
-                            html += '<button type="button" class="btn btn-secondary  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">';
-                            html += '<i class="fa fa-bars" aria-hidden="true"></i>';
-                            html += '</button>';
-                            html += '<div class="dropdown-menu">';
-                            html += '<a class="dropdown-item" href="'+ urlSwaggerEditor + '/' + row.id  + '" target="_blank">Swagger Editor</a>';
-                            html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Swagger UI</a>';
-                            html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Detail</a>';
-                            html += '<div>';
-                            html += '<div>';
+                {"data": "id"},
+                {"data": "divisionTitle", "defaultContent": ""},
+                {"data": "teamTitle", "defaultContent": ""},
+                {"data": "projectTitle", "defaultContent": ""},
+                {"data": "name", "defaultContent": ""},
+                {"data": "revision", "defaultContent": ""},
+                {"data": "version", "defaultContent": ""},
+                {"data": "status", "defaultContent": ""},
+                {"data": "createdDate", "defaultContent": ""},
+                {"data": "updatedDate", "defaultContent": ""},
+                {"data": "createdBy", "defaultContent": ""},
+                {"data": "updatedBy", "defaultContent": ""},
+            ],
+            "columnDefs": [
+                {
+                    "targets": '_all',
+                    "defaultContent": ""
+                },
+                {
+                    "targets": 1,
+                    "data": "id",
+                    "mRender": function (data, type, row) {
+                        html = '<div class="btn-group btn-group-sm dropright">';
+                        html += '<button type="button" class="btn btn-secondary  btn-sm dropdown-toggle" data-toggle="dropdown" aria-expanded="false">';
+                        html += '<i class="fa fa-bars" aria-hidden="true"></i>';
+                        html += '</button>';
+                        html += '<div class="dropdown-menu">';
+                        html += '<a class="dropdown-item" href="'+ urlSwaggerEditor + '/' + row.id  + '">Swagger Editor</a>';
+                        html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Swagger UI</a>';
+                        html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Detail</a>';
+                        html += '<div>';
+                        html += '<div>';
 
-                            return html;
+                        return html;
+                    }
+                },
+                {
+                    "targets": 8,
+                    "data": "status",
+                    "mRender": function (data, type, row) {
+                        html = '';
+                        console.log('id: ' + row.id + ' status: ' + row.status);
+                        if (row.status === 'PUBLISHED') {
+                            html += '<button class="btn btn-success btn-sm"> Published </button>';
+                        } else {
+                            html += '<button class="btn btn-warning btn-sm" onclick="confirmation(' +'\'' + publishUrl + '/' + row.id + '\'' + ')"> Go Publish </button>';
                         }
-                    },
 
-                ]
-            });
+                        return html;
+                    }
+                },
+
+            ]
+        });
+
+        $(document).ready(function () {
+            apiContractDatatable.ajax.reload();
         });
         /*]]>*/
     </script>

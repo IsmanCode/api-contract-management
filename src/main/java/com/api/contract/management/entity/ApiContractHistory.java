@@ -30,14 +30,6 @@ public class ApiContractHistory extends BaseUuidEntity {
     @JoinColumn(name = "api_contract_id")
     private ApiContract apiContract;
 
-    @ManyToOne
-    @JoinColumn(name = "division_id")
-    private Division division;
-
-    @ManyToOne
-    @JoinColumn(name = "team_id")
-    private Team team;
-
     @Column(name = "name")
     private String name;
 

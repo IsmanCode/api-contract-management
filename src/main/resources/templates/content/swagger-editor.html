@@ -76,9 +76,12 @@
 
     var baseLink = /*[[@{/}]]*/ '';
     var contextPath = '[[${contextPath}]]';
-    var pageName = contextPath + '/swagger-store';
-    var urlSever = baseLink + pageName;
+    let id = '[[${id}]]';
+    var pageName = contextPath + '/api/swagger-store';
+    var urlSever = baseLink + pageName + '/' + id;
+    var urlApiContract = contextPath + '/api-contract';
     console.log('urlSever: ' + urlSever);
+    console.log('urlApiContract: ' + urlApiContract);
 
     var confirmSave = function () {
         Swal.fire({

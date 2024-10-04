@@ -34,16 +34,7 @@ public class ApiContractDatatablesServiceImpl implements ApiContractDatatablesSe
 
         String sortDirection = request.getOrder().getSortDir();
 
-        Pageable pageable = null;
-
-        if (sortDirection.equalsIgnoreCase("DESC")) {
-            pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "updatedDate"));
-        }else if (sortDirection.equalsIgnoreCase("ASC")){
-            pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.ASC, "updatedDate"));
-        }else {
-            pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "updatedDate"));
-
-        }
+        Pageable pageable = PageRequest.of(page, limit, Sort.by(Sort.Direction.DESC, "updatedDate"));
 
         Page<ApiContract> pageData = apiContractRepository.findByNameLikeIgnoreCase(search,pageable);
 
@@ -69,6 +60,7 @@ public class ApiContractDatatablesServiceImpl implements ApiContractDatatablesSe
                     response.setDivisionTitle(data.getProject().getDivision().getTitle());
                     response.setTeamTitle(data.getProject().getTeam().getTitle());
                     response.setProjectTitle(data.getProject().getTitle());
+                    response.setStatus(data.getStatus());
                     response.setCreatedDate(data.getCreatedDate());
                     response.setUpdatedDate(data.getUpdatedDate());
                     response.setCreatedBy(data.getCreatedBy());

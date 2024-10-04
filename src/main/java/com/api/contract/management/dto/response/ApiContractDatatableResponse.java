@@ -1,6 +1,7 @@
 package com.api.contract.management.dto.response;
 
 import com.api.contract.management.base.dto.response.BaseEntityResponse;
+import com.api.contract.management.common.enums.ApiContractStatusEnum;
 import lombok.Data;
 
 import java.util.UUID;
@@ -21,6 +22,8 @@ public class ApiContractDatatableResponse extends BaseEntityResponse {
     private Integer revision;
 
     private String version;
+
+    private ApiContractStatusEnum status;
 
 }
 

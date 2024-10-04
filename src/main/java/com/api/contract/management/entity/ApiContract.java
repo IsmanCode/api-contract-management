@@ -2,6 +2,7 @@ package com.api.contract.management.entity;
 
 import com.api.contract.management.base.entity.BaseIdEntity;
 import com.api.contract.management.base.entity.BaseUuidEntity;
+import com.api.contract.management.common.enums.ApiContractStatusEnum;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
 import lombok.Getter;
@@ -11,10 +12,7 @@ import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.Type;
 import org.hibernate.annotations.TypeDef;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.*;
 import java.util.Map;
 
 @DynamicUpdate
@@ -42,6 +40,10 @@ public class ApiContract extends BaseUuidEntity {
     @Type(type = "jsonb")
     @Column(name = "open_api_spec")
     private Map<String, Object> openApiSpec;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "status")
+    private ApiContractStatusEnum status;
 
 }
 
