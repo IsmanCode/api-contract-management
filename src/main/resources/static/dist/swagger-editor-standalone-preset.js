@@ -37344,24 +37344,50 @@
                     let n = Jn.load(e),
                         r = PS()(n, null, 2);
                     this.downloadFile(r, `${t}.json`)
-                })), b(this, "saveToDb", (async () => {
+                })), b(this, "saveToDb", ( () => {
                     let swaggerEditorSpec = this.props.specSelectors.specStr();
-                    console.log("specUrl: " + urlSever);
-                    console.log("spec: " + swaggerEditorSpec);
                     if (this.hasParserErrors()) return alert("Save as JSON is not currently possible because Swagger-Editor wasn't able to parse your API definition.");
                     let swaggerEditorSpecJson = Jn.load(swaggerEditorSpec);
-                    try {
-                        const myHeaders = new Headers();
-                        myHeaders.append("Content-Type", "application/json");
-                        const response = await fetch(urlSever, {
-                            method: "POST",
-                            body: JSON.stringify(swaggerEditorSpecJson),
-                            headers: myHeaders,
-                        });
-                        console.log('spec n: ' + JSON.stringify(swaggerEditorSpecJson));
-                    } catch (error) {
-                        console.log(error);
-                    }
+
+                    Swal.fire({
+                        title: "Confirm Save To Database",
+                        showCancelButton: true,
+                        confirmButtonText: "Confirm",
+                        showLoaderOnConfirm: true,
+                        preConfirm: async () => {
+                            try {
+                                const myHeaders = new Headers();
+                                myHeaders.append("Content-Type", "application/json");
+                                const response = await fetch(urlSever, {
+                                    method: "POST",
+                                    body: JSON.stringify(swaggerEditorSpecJson),
+                                    headers: myHeaders,
+                                });
+                                return response;
+                            } catch (error) {
+                                Swal.showValidationMessage(`
+                                    Request failed: ${error}
+                                  `);
+                            }
+                        },
+                        allowOutsideClick: () => !Swal.isLoading()
+                    }).then((result) => {
+                        console.log('test swal');
+                        if (result.isConfirmed) {
+                            console.log('status: ' + result.value.status);
+                            if (result.value.status === 200 || result.value.status === 201) {
+                                Swal.fire({
+                                    title:"Success",
+                                    icon:"success"
+                                })
+                            } else {
+                                Swal.fire({
+                                    title:"Failed",
+                                    icon:"failed"
+                                })
+                            }
+                        }
+                    });
                 })), b(this, "saveAsText", (() => {
                     console.warn("DEPRECATED: saveAsText will be removed in the next minor version.");
                     let e = this.props.specSelectors.specStr(),
@@ -37536,8 +37562,9 @@
                     key: "2"
                 }, O.createElement("button", {
                     type: "button",
-                    id:"saveToDb"
-                    // onClick: this.saveToDb
+                    id:"saveToDb",
+                    // onClick: confirmSave
+                    onClick: this.saveToDb
                     // onClick: this.saveToDb
                 }, "Save To Database"))], O.createElement("li", {
                     role: "separator"

@@ -1,5 +1,6 @@
 package com.api.contract.management.entity;
 
+import com.api.contract.management.base.entity.BaseIdEntity;
 import com.api.contract.management.base.entity.BaseUuidEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -35,6 +36,9 @@ public class ApiContract extends BaseUuidEntity {
 
     @Column(name = "name")
     private String name;
+
+    @Column(name = "revision")
+    private Integer revision;
 
     @Column(name = "version")
     private String version;

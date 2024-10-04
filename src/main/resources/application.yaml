@@ -1,0 +1,21 @@
+spring:
+  application:
+    name: api-contract-management
+  datasource:
+    url: jdbc:postgresql://localhost:9999/api_contract_management
+    username: postgres
+    password: postgres
+  jpa:
+    spring:
+      jpa:
+        database-platform: org.hibernate.dialect.PostgreSQLDialect
+    hibernate:
+      ddl-auto: update
+  h2:
+    console.enabled: true
+
+logging:
+  level:
+    root: INFO
+    com:
+      api: TRACE

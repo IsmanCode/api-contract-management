@@ -48,6 +48,7 @@
 <!-- Google Tag Manager (noscript) -->
 <div id="swagger-editor"></div>
 <input type="hidden" th:value="${swaggerEditorSpec}" id="swaggerSpec"/>
+<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
 <script th:src="@{/dist/swagger-editor-bundle.js}"> </script>
 
 <script th:inline="javascript" th:src="@{/dist/swagger-editor-standalone-preset.js}">
@@ -79,6 +80,14 @@
     var pageName = contextPath + '/swagger-store';
     var urlSever = baseLink + pageName;
     console.log('urlSever: ' + urlSever);
+
+    var confirmSave = function () {
+        Swal.fire({
+            title: "<i>Title</i>",
+            html: "Testno  sporocilo za objekt: <b>test</b>",
+            confirmButtonText: "V <u>redu</u>",
+        })
+    }
 
     /*]]>*/
 </script>

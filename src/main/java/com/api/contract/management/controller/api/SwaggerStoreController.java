@@ -13,10 +13,9 @@ import java.util.Map;
 @RestController
 public class SwaggerStoreController {
     @PostMapping("/swagger-store")
-    public ResponseEntity doExecute(@RequestBody String jsonSpec) {
+    public ResponseEntity doExecute(@RequestBody String jsonSpec) throws InterruptedException {
         log.debug("jsonSpec: {}", jsonSpec);
         Map<String,Object> map = ObjectMapperUtil.convertToObject(jsonSpec,Map.class);
-        log.debug("mapping: {}", map);
         return ResponseEntity.ok(map);
     }
 }

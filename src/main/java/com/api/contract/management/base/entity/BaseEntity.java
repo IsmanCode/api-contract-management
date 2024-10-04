@@ -15,15 +15,15 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseEntity implements Serializable{
 
-    @Column(name = "CREATE_DATE", updatable = false)
+    @Column(name = "CREATE_DATE")
     private Date createDate;
 
-    @Column(name = "UPDATE_DATE", insertable = false)
+    @Column(name = "UPDATE_DATE")
     private Date updateDate;
 
-    @Column(name = "CREATE_DATE", updatable = false)
+    @Column(name = "CREATE_BY")
     private String createBy;
 
-    @Column(name = "UPDATE_DATE", insertable = false)
+    @Column(name = "UPDATE_BY")
     private String updateBy;
 }

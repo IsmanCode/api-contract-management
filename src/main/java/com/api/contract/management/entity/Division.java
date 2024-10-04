@@ -1,5 +1,6 @@
 package com.api.contract.management.entity;
 
+import com.api.contract.management.base.entity.BaseIdEntity;
 import com.api.contract.management.base.entity.BaseUuidEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
