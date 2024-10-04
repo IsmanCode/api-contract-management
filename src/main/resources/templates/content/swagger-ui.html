@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      layout:decorate="~{index}">
+<head>
+    <section layout:fragment="head-end">
+        <link rel="stylesheet" type="text/css" th:href="@{/dist/ui/dist/swagger-ui.css}"/>
+        <link rel="stylesheet" type="text/css" th:href="@{/dist/ui/dist/index.css}"/>
+        <link rel="icon" type="image/png" th:href="@{/dist/ui/dist/favicon-32x32.png}" sizes="32x32"/>
+        <link rel="icon" type="image/png" th:href="@{/dist/ui/dist/favicon-16x16.png}" sizes="16x16"/>
+    </section>
+</head>
+<body>
+<div class="container-fluid" layout:fragment="content">
+
+    <!-- Page Heading -->
+    <div class="d-sm-flex align-items-center justify-content-between mb-4">
+        <h1 class="h3 mb-0 text-gray-800">Swagger UI</h1>
+        <!--<a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
+                class="fas fa-plus fa-sm text-white-50"></i> Create API Contract</a>-->
+    </div>
+
+    <!-- Content Row -->
+    <div class="row">
+        <!-- DataTables Example -->
+        <div class="card">
+            <div id="swagger-ui"></div>
+        </div>
+    </div>
+
+</div>
+
+<section layout:fragment="body-end">
+    <script th:src="@{/dist/ui/dist/swagger-ui-bundle.js}" charset="UTF-8"> </script>
+    <script th:src="@{/dist/ui/dist/swagger-ui-standalone-preset.js}" charset="UTF-8"> </script>
+
+    <script>
+        /*<![CDATA[*/
+
+        let id = '[[${id}]]';
+        console.log('id: ' + id);
+        let contextPath = /*[[${contextPath}]]*/'';
+        let uriApi = '/api/swagger-ui/';
+        let urlApi = contextPath + uriApi + id;
+        window.onload = function () {
+            // Build a system
+            const ui = SwaggerUIBundle({
+                url: urlApi,
+                dom_id: '#swagger-ui',
+                deepLinking: true,
+                presets: [
+                    SwaggerUIBundle.presets.apis,
+                    SwaggerUIStandalonePreset.slice(1)
+                ],
+                plugins: [
+                    SwaggerUIBundle.plugins.DownloadUrl
+                ],
+                layout: "StandaloneLayout"
+            })
+
+            window.ui = ui
+
+        }
+        /*]]>*/
+    </script>
+</section>
+
+</body>
+</html>

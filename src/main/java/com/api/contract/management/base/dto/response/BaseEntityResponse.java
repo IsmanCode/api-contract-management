@@ -1,10 +1,9 @@
-package com.api.contract.management.base.entity;
+package com.api.contract.management.base.dto.response;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Column;
 import javax.persistence.MappedSuperclass;
 import java.io.Serializable;
 import java.util.Date;
@@ -13,17 +12,14 @@ import java.util.Date;
 @NoArgsConstructor
 @AllArgsConstructor
 @MappedSuperclass
-public class BaseEntity implements Serializable{
+public class BaseEntityResponse implements Serializable{
 
-    @Column(name = "CREATED_DATE")
     private Date createdDate;
 
-    @Column(name = "UPDATED_DATE")
     private Date updatedDate;
 
-    @Column(name = "CREATED_BY")
     private String createdBy;
 
-    @Column(name = "UPDATED_BY")
     private String updatedBy;
+
 }

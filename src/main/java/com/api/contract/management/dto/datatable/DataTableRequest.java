@@ -1,5 +1,6 @@
 package com.api.contract.management.dto.datatable;
 
+import com.api.contract.management.base.dto.request.ServiceRequest;
 import com.api.contract.management.common.util.DataTableUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -17,7 +18,7 @@ import java.util.regex.Pattern;
  *
  * @author pavan.solapure
  */
-public class DataTableRequest<T> {
+public class DataTableRequest<T> implements ServiceRequest {
     private static final Logger logger = LoggerFactory.getLogger(DataTableRequest.class);
 
     /** The unique id. */
