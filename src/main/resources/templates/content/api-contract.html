@@ -8,8 +8,58 @@
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
         <h1 class="h3 mb-0 text-gray-800">API Contract</h1>
-        <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i
-                class="fas fa-plus fa-sm text-white-50"></i> Create API Contract</a>
+        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#apiContractFormModal"><i
+                class="fas fa-plus fa-sm text-white-50"></i> Create API Contract</button>
+    </div>
+
+    <div class="modal fade" id="apiContractFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Create API Contract</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="divisionId" class="col-form-label">Division:</label>
+                            <select id="divisionId" class="form-control" required>
+                                <option value="">Choose...</option>
+                                <option value="division.id">Technology</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="teamId" class="col-form-label">Team:</label>
+                            <select id="teamId" class="form-control" required>
+                                <option value="">Choose...</option>
+                                <option value="team.id">Service Experience</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="projectId" class="col-form-label">Project:</label>
+                            <select id="projectId" class="form-control" required>
+                                <option value="">Choose...</option>
+                                <option value="project.id">mid-jokul-checkout-system</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="contractName" class="col-form-label">Contract Name:</label>
+                            <input class="form-control" id="contractName" required />
+                        </div>
+                        <div class="form-group">
+                            <label for="version" class="col-form-label">Version:</label>
+                            <input class="form-control" id="version" required/>
+                        </div>
+                    </form>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                    <button type="button" class="btn btn-primary">Create</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- Content Row -->
@@ -56,7 +106,7 @@
         /*<![CDATA[*/
          var confirmation = (urlApi) => {
             Swal.fire({
-                title: "Confirm Save To Database",
+                title: "Confirm Publish API Contract",
                 showCancelButton: true,
                 confirmButtonText: "Confirm",
                 showLoaderOnConfirm: true,
@@ -112,7 +162,7 @@
         var apiContractDatatable = $('#apiContractDatatable').DataTable({
             "processing": true,
             "serverSide": true,
-            "searching": true,
+            "searching": false,
             "paging": true,
             "lengthChange": true,
             "ordering": true,
