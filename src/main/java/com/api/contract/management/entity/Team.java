@@ -1,6 +1,5 @@
 package com.api.contract.management.entity;
 
-import com.api.contract.management.base.entity.BaseIdEntity;
 import com.api.contract.management.base.entity.BaseUuidEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.vladmihalcea.hibernate.type.json.JsonBinaryType;
@@ -12,6 +11,8 @@ import org.hibernate.annotations.TypeDef;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @DynamicUpdate
 @Setter
@@ -21,6 +22,10 @@ import javax.persistence.Entity;
 @TypeDef(name = "jsonb", typeClass = JsonBinaryType.class)
 @ToString
 public class Team extends BaseUuidEntity {
+
+    @ManyToOne
+    @JoinColumn(name = "division_id")
+    private Division division;
 
     @Column(name = "name")
     private String name;

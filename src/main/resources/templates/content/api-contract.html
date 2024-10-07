@@ -26,22 +26,17 @@
                         <div class="form-group">
                             <label for="divisionId" class="col-form-label">Division: <span class="text-danger">* </span> </label><span id="divisionIdInvalid" class="text-danger"></span>
                             <select id="divisionId" name="divisionId" class="form-control" required>
-                                <option value="">Choose...</option>
-                                <option value="division.id">Technology</option>
+                                <option value="">Select an option</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="teamId" class="col-form-label">Team: <span class="text-danger">* </span> </label> <span id="teamIdInvalid" class="text-danger"></span>
                             <select id="teamId" name="teamId" class="form-control" required>
-                                <option value="">Choose...</option>
-                                <option value="team.id">Service Experience</option>
                             </select>
                         </div>
                         <div class="form-group">
                             <label for="projectId" class="col-form-label">Project: <span class="text-danger">* </span> </label><span id="projectIdInvalid" class="text-danger"></span>
                             <select id="projectId" name="projectId" class="form-control" required>
-                                <option value="">Choose...</option>
-                                <option value="project.id">mid-jokul-checkout-system</option>
                             </select>
                         </div>
                         <div class="form-group">
@@ -103,6 +98,47 @@
 <section layout:fragment="body-end">
 
     <script th:src="@{/js/helper/hit-json-api.js}"></script>
+    <script th:src="@{/js/helper/hit-json-api-option.js}"></script>
+
+    <script>
+        function getDivisionListOption() {
+            let contextPath = /*[[${contextPath}]]*/'';
+            let divisionUrl = contextPath + '/api/division/list';
+            const divisionId = document.getElementById('divisionId');
+            fetch(divisionUrl) // Endpoint untuk data pertama
+                .then(response => response.json())
+                .then(data => {
+                    data.data.forEach(item => {
+                        const option = document.createElement('option');
+                        option.value = item.id;
+                        option.textContent = item.name;
+                        divisionId.appendChild(option);
+                    });
+                });
+        }
+        function getTeamListOption() {
+            let contextPath = /*[[${contextPath}]]*/'';
+            let teamUrl = contextPath + '/api/team/list';
+            const divisionId = document.getElementById('divisionId');
+            const teamId = document.getElementById('teamId');
+            hitJsonApiOption({
+                firstElement: divisionId,
+                secondElement: teamId,
+                url: teamUrl
+            });
+        }
+        function getProjectListOption() {
+            let contextPath = /*[[${contextPath}]]*/'';
+            let projectUrl = contextPath + '/api/project/list';
+            const teamId = document.getElementById('teamId');
+            const projectId = document.getElementById('projectId');
+            hitJsonApiOption({
+                firstElement: teamId,
+                secondElement: projectId,
+                url: projectUrl
+            });
+        }
+    </script>
 
     <script>
 
@@ -144,6 +180,22 @@
                         })
                     }
                 }
+            });
+        }
+
+        function validationForm() {
+            //check form value for remove error message
+            const form = document.getElementById('formApiContract');
+            form.addEventListener('change', function(event) {
+                const target = event.target;
+                const field = target.id;
+                const value = target.value;
+                let errorMessage = 'This field is required';
+                if (value) {
+                    errorMessage = '';
+                }
+
+                $('#'+ field +'Invalid').text(errorMessage);
             });
         }
 
@@ -293,20 +345,10 @@
 
         $(document).ready(function () {
             apiContractDatatable.ajax.reload();
-
-            //check form value for remove error message
-            const form = document.getElementById('formApiContract');
-            form.addEventListener('change', function(event) {
-                const target = event.target;
-                const field = target.id;
-                const value = target.value;
-                let errorMessage = 'This field is required';
-                if (value) {
-                    errorMessage = '';
-                }
-
-                $('#'+ field +'Invalid').text(errorMessage);
-            });
+            validationForm();
+            getDivisionListOption();
+            getTeamListOption();
+            getProjectListOption();
         });
         /*]]>*/
     </script>

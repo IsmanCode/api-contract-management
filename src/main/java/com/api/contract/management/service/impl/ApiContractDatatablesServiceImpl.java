@@ -57,7 +57,7 @@ public class ApiContractDatatablesServiceImpl implements ApiContractDatatablesSe
                     ApiContractDatatableResponse response = new ApiContractDatatableResponse();
                     BeanUtils.copyProperties(data,response);
                     response.setId(data.getId());
-                    response.setDivisionTitle(data.getProject().getDivision().getTitle());
+                    response.setDivisionTitle(data.getProject().getTeam().getDivision().getTitle());
                     response.setTeamTitle(data.getProject().getTeam().getTitle());
                     response.setProjectTitle(data.getProject().getTitle());
                     response.setStatus(data.getStatus());
