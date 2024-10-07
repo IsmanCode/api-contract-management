@@ -12,51 +12,52 @@
                 class="fas fa-plus fa-sm text-white-50"></i> Create API Contract</button>
     </div>
 
-    <div class="modal fade" id="apiContractFormModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal fade" id="apiContractFormModal" tabindex="-1" role="dialog" aria-labelledby="createApiContractModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLabel">Create API Contract</h5>
+                    <h5 class="modal-title" id="createApiContractModal">Create API Contract</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form>
+                    <form id="formApiContract" name="formApiContract" class="needs-validation" novalidate>
                         <div class="form-group">
-                            <label for="divisionId" class="col-form-label">Division:</label>
-                            <select id="divisionId" class="form-control" required>
+                            <label for="divisionId" class="col-form-label">Division: <span class="text-danger">* </span> </label><span id="divisionIdInvalid" class="text-danger"></span>
+                            <select id="divisionId" name="divisionId" class="form-control" required>
                                 <option value="">Choose...</option>
                                 <option value="division.id">Technology</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="teamId" class="col-form-label">Team:</label>
-                            <select id="teamId" class="form-control" required>
+                            <label for="teamId" class="col-form-label">Team: <span class="text-danger">* </span> </label> <span id="teamIdInvalid" class="text-danger"></span>
+                            <select id="teamId" name="teamId" class="form-control" required>
                                 <option value="">Choose...</option>
                                 <option value="team.id">Service Experience</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="projectId" class="col-form-label">Project:</label>
-                            <select id="projectId" class="form-control" required>
+                            <label for="projectId" class="col-form-label">Project: <span class="text-danger">* </span> </label><span id="projectIdInvalid" class="text-danger"></span>
+                            <select id="projectId" name="projectId" class="form-control" required>
                                 <option value="">Choose...</option>
                                 <option value="project.id">mid-jokul-checkout-system</option>
                             </select>
                         </div>
                         <div class="form-group">
-                            <label for="contractName" class="col-form-label">Contract Name:</label>
-                            <input class="form-control" id="contractName" required />
+                            <label for="contractName" class="col-form-label">Contract Name: <span class="text-danger">* </span> </label><span id="contractNameInvalid" class="text-danger"></span>
+                            <input class="form-control" id="contractName" name="contractName" aria-describedby="contractInvalid" required />
                         </div>
                         <div class="form-group">
-                            <label for="version" class="col-form-label">Version:</label>
-                            <input class="form-control" id="version" required/>
+                            <label for="version" class="col-form-label">Version: <span class="text-danger">* </span> </label> <span  id="versionInvalid" class="text-danger"></span>
+                            <input class="form-control" id="version" name="version" aria-describedby="versionInvalid" required/>
+                        </div>
+
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
+                            <button type="button" class="btn btn-primary" onclick="apiContractForm()">Create</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Create</button>
                 </div>
             </div>
         </div>
@@ -100,6 +101,54 @@
 </div>
 
 <section layout:fragment="body-end">
+
+    <script th:src="@{/js/helper/hit-json-api.js}"></script>
+
+    <script>
+
+        /*<![CDATA[*/
+
+        function apiContractForm() {
+            let contextPath = /*[[${contextPath}]]*/'';
+            let apiContractFormUrl = contextPath + '/api/api-contract/store';
+            var formData = new FormData(document.getElementById('formApiContract'));
+            let body = JSON.stringify(Object.fromEntries(formData));
+            let params = {
+                title: 'Confirm Create API Contract',
+                method: 'POST',
+                body: body,
+                urlApi: apiContractFormUrl,
+            }
+            hitJsonApi(params).then(async (result) => {
+                if (result.isConfirmed) {
+                    if (result.value.status === 200 || result.value.status === 201) {
+                        Swal.fire({
+                            title: "Success",
+                            icon: "success"
+                        })
+                    } else if (result.value.status === 400) {
+                        let body = result.value;
+                        let bodyData = await body.json();
+                        let errors = bodyData.errors;
+                        for (const key in errors) {
+                            var error = errors[key];
+                            const field = error.field;
+                            const fieldInvalid = field + 'Invalid';
+                            const message = error.message;
+                            $('#'+fieldInvalid).text(message);
+                        }
+                    } else {
+                        Swal.fire({
+                            title: "Failed",
+                            icon: "failed"
+                        })
+                    }
+                }
+            });
+        }
+
+        /*]]>*/
+    </script>
 
     <script>
 
@@ -244,6 +293,20 @@
 
         $(document).ready(function () {
             apiContractDatatable.ajax.reload();
+
+            //check form value for remove error message
+            const form = document.getElementById('formApiContract');
+            form.addEventListener('change', function(event) {
+                const target = event.target;
+                const field = target.id;
+                const value = target.value;
+                let errorMessage = 'This field is required';
+                if (value) {
+                    errorMessage = '';
+                }
+
+                $('#'+ field +'Invalid').text(errorMessage);
+            });
         });
         /*]]>*/
     </script>
