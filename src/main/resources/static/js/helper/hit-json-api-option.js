@@ -1,7 +1,6 @@
 function hitJsonApiOption (request) {
     request.firstElement.addEventListener('change', function() {
         const selectedId = this.value;
-        console.log('selectedId: ' + selectedId);
 
         fetch(request.url+`/${selectedId}`) // Endpoint untuk data kedua
             .then(response => response.json())
