@@ -1,7 +1,6 @@
 package com.api.contract.management.dto.query.response;
 
 import com.api.contract.management.entity.Project;
-import com.api.contract.management.entity.Team;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,11 +13,9 @@ import java.util.UUID;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class ProjectListResponse {
+public class ProjectResponse {
 
     private UUID id;
-
-    private UUID divisionId;
 
     private UUID teamId;
 

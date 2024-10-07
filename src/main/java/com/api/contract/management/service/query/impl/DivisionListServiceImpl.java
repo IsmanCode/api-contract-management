@@ -1,7 +1,7 @@
 package com.api.contract.management.service.query.impl;
 
 import com.api.contract.management.dto.query.request.DivisionListRequest;
-import com.api.contract.management.dto.query.response.DivisionListResponse;
+import com.api.contract.management.dto.query.response.DivisionResponse;
 import com.api.contract.management.entity.Division;
 import com.api.contract.management.repository.DivisionRepository;
 import com.api.contract.management.service.query.contract.DivisionListService;
@@ -19,16 +19,16 @@ public class DivisionListServiceImpl implements DivisionListService {
     private final DivisionRepository divisionRepository;
 
     @Override
-    public List<DivisionListResponse> execute(DivisionListRequest request) {
+    public List<DivisionResponse> execute(DivisionListRequest request) {
 
         List<Division> divisions = divisionRepository.findAll();
 
         return buildResponse(divisions);
     }
 
-    private List<DivisionListResponse> buildResponse(List<Division> divisions) {
+    private List<DivisionResponse> buildResponse(List<Division> divisions) {
         return divisions.stream()
-                .map(division -> DivisionListResponse.builder()
+                .map(division -> DivisionResponse.builder()
                         .id(division.getId())
                         .name(division.getName())
                         .title(division.getTitle())

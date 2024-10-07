@@ -87261,7 +87261,7 @@
 		}({
 			editorPluginsToRun: ["gutterClick", "jsonToYaml", "pasteHandler"]
 		});
-		const qM = "DELETE_OpenAPI3-swagger-editor-bundle-js",
+		const qM = "",
 			UM = "swagger-editor-content";
 		let WM = window.localStorage;
 		const VM = e => (...t) => {

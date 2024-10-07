@@ -1,7 +1,7 @@
 package com.api.contract.management.service.query.impl;
 
 import com.api.contract.management.dto.query.request.TeamListRequest;
-import com.api.contract.management.dto.query.response.TeamListResponse;
+import com.api.contract.management.dto.query.response.TeamResponse;
 import com.api.contract.management.entity.Team;
 import com.api.contract.management.repository.TeamRepository;
 import com.api.contract.management.service.query.contract.TeamListService;
@@ -19,16 +19,16 @@ public class TeamListServiceImpl implements TeamListService {
     private final TeamRepository teamRepository;
 
     @Override
-    public List<TeamListResponse> execute(TeamListRequest request) {
+    public List<TeamResponse> execute(TeamListRequest request) {
 
         List<Team> teams = teamRepository.findByDivisionId(request.getDivisionId());
 
         return buildResponse(teams);
     }
 
-    private List<TeamListResponse> buildResponse(List<Team> teams) {
+    private List<TeamResponse> buildResponse(List<Team> teams) {
         return teams.stream()
-                .map(team -> TeamListResponse.builder()
+                .map(team -> TeamResponse.builder()
                         .id(team.getId())
                         .divisionId(team.getDivision().getId())
                         .name(team.getName())

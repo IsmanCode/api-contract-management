@@ -8,10 +8,15 @@ import com.api.contract.management.service.contract.ApiContractPublishService;
 import com.api.contract.management.service.contract.ApiContractStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
+import java.io.IOException;
 import java.util.UUID;
 
 @Slf4j
@@ -23,9 +28,14 @@ public class ApiContractStoreController {
     private final ServiceExecutor serviceExecutor;
 
     @PostMapping("/api-contract/store")
-    public ResponseEntity doExecute(@RequestBody() @Valid ApiContractStoreRequest request) {
+    public ResponseEntity doExecute(@RequestBody() @Valid ApiContractStoreRequest request){
 
+        String redirectUrl = "/swagger-editor/";
         var response = serviceExecutor.execute(ApiContractStoreService.class, request);
-        return ResponseEntity.ok(BaseResponse.builder().data(response).build());
+        response.setUri(redirectUrl + response.getId());
+
+        return ResponseEntity.ok(BaseResponse.builder()
+                .data(response)
+                .build());
     }
 }

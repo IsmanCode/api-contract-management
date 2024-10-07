@@ -34,9 +34,13 @@ public class SwaggerEditorController {
                         .id(id)
                 .build());
 
-        String jsonSpec = ObjectMapperUtil.convertToString(response.getOpenApiSpec());
-
-        String yamlSpec = ObjectMapperUtil.convertJsonToYaml(jsonSpec);
+        String yamlSpec="";
+        if (response.getOpenApiSpec() != null && !response.getOpenApiSpec().isEmpty()) {
+            String jsonSpec = ObjectMapperUtil.convertToString(response.getOpenApiSpec());
+            log.debug("jsonSpec: {}", jsonSpec);
+            yamlSpec = ObjectMapperUtil.convertJsonToYaml(jsonSpec);
+            log.debug("yamlSpec: {}", yamlSpec);
+        }
         Map<String,Object> params = new HashMap<>();
         params.put("id",id);
         params.put("swaggerEditorSpec",yamlSpec);

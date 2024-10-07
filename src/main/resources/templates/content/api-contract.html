@@ -156,15 +156,19 @@
                 urlApi: apiContractFormUrl,
             }
             hitJsonApi(params).then(async (result) => {
+                let body = result.value;
+                let bodyData = await body.json();
                 if (result.isConfirmed) {
                     if (result.value.status === 200 || result.value.status === 201) {
+                        let data = bodyData.data;
                         Swal.fire({
                             title: "Success",
                             icon: "success"
+                        }).then(() => {
+
+                            window.location.href = contextPath + data.uri;
                         })
                     } else if (result.value.status === 400) {
-                        let body = result.value;
-                        let bodyData = await body.json();
                         let errors = bodyData.errors;
                         for (const key in errors) {
                             var error = errors[key];
