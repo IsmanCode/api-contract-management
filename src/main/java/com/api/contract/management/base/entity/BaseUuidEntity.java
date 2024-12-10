@@ -3,7 +3,7 @@ package com.api.contract.management.base.entity;
 import lombok.Data;
 import org.hibernate.annotations.GenericGenerator;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 import java.util.UUID;
 
 @MappedSuperclass

@@ -4,6 +4,7 @@ import com.api.contract.management.base.command.ServiceExecutor;
 import com.api.contract.management.common.util.ObjectMapperUtil;
 import com.api.contract.management.dto.request.ApiSwaggerUIRequest;
 import com.api.contract.management.service.contract.ApiSwaggerUIService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -11,7 +12,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

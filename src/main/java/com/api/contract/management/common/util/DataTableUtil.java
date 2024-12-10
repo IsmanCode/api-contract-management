@@ -2,7 +2,7 @@ package com.api.contract.management.common.util;
 
 import com.api.contract.management.dto.datatable.PaginationCriteria;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 import java.util.Collection;
 import java.util.Iterator;
 import java.util.List;

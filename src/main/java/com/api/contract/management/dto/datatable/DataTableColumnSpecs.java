@@ -1,6 +1,6 @@
 package com.api.contract.management.dto.datatable;
 
-import javax.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletRequest;
 
 /**
  * The Class DataTableColumnSpecs.

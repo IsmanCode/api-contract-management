@@ -1,17 +1,16 @@
 package com.api.contract.management.controller.api;
 
 import com.api.contract.management.base.command.ServiceExecutor;
-import com.api.contract.management.common.util.ObjectMapperUtil;
 import com.api.contract.management.dto.request.ApiContractPublishRequest;
-import com.api.contract.management.dto.request.ApiSwaggerStoreRequest;
 import com.api.contract.management.service.contract.ApiContractPublishService;
-import com.api.contract.management.service.contract.ApiSwaggerStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PatchMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Map;
 import java.util.UUID;
 
 @Slf4j

@@ -4,7 +4,7 @@ import com.api.contract.management.base.dto.criteria.SearchCriteria;
 import org.springframework.data.jpa.domain.Specification;
 import org.springframework.lang.Nullable;
 
-import javax.persistence.criteria.*;
+import jakarta.persistence.criteria.*;
 import java.time.Instant;
 import java.time.LocalDate;
 import java.util.Date;

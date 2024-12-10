@@ -2,7 +2,7 @@ package com.api.contract.management.base.entity;
 
 import lombok.Data;
 
-import javax.persistence.*;
+import jakarta.persistence.*;
 
 @MappedSuperclass
 @Data
