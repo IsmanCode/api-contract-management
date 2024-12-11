@@ -6,15 +6,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.DynamicUpdate;
-import org.hibernate.annotations.Type;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Map;
 
 @EqualsAndHashCode(callSuper = true)
 @DynamicUpdate
-@Data
+@Setter
+@Getter
 @Entity(name = "api_contract_history")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
+@SQLDelete(sql = "UPDATE division SET deleted= true WHERE id = ?")
+@SQLRestriction("deleted=false or deleted is null")
 public class ApiContractHistory extends BaseUuidEntity {
 
     @ManyToOne

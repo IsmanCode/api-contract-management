@@ -3,12 +3,12 @@ package com.api.contract.management.entity;
 import com.api.contract.management.base.common.utils.JsonConverter;
 import com.api.contract.management.base.entity.BaseUuidEntity;
 import com.api.contract.management.common.enums.ApiContractStatusEnum;
-import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
-import lombok.ToString;
 import org.hibernate.annotations.DynamicUpdate;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.SQLRestriction;
 
 import java.util.Map;
 
@@ -16,8 +16,8 @@ import java.util.Map;
 @Setter
 @Getter
 @Entity(name = "api_contract")
-@JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-@ToString
+@SQLDelete(sql = "UPDATE division SET deleted= true WHERE id = ?")
+@SQLRestriction("deleted=false or deleted is null")
 public class ApiContract extends BaseUuidEntity {
 
     @ManyToOne
