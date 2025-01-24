@@ -16,10 +16,10 @@ import java.util.Date;
 public class BaseEntity implements Serializable{
 
     @Column(name = "CREATED_DATE")
-    private Date createdDate;
+    private Long createdDate;
 
     @Column(name = "UPDATED_DATE")
-    private Date updatedDate;
+    private Long updatedDate;
 
     @Column(name = "CREATED_BY")
     private String createdBy;

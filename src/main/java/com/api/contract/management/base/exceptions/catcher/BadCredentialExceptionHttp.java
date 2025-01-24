@@ -1,7 +1,7 @@
 package com.api.contract.management.base.exceptions.catcher;
 
 import com.api.contract.management.base.dto.response.ErrorResponse;
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.base.exceptions.AbstractException;
 import com.api.contract.management.base.dto.request.BaseExceptionRequest;
 import lombok.extern.slf4j.Slf4j;

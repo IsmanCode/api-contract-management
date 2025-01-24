@@ -1,12 +1,10 @@
 package com.api.contract.management.service.impl;
 
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.base.dto.response.ErrorResponse;
 import com.api.contract.management.base.exceptions.thrower.DataNotFoundException;
 import com.api.contract.management.common.enums.ApiContractStatusEnum;
-import com.api.contract.management.dto.request.ApiContractPublishRequest;
 import com.api.contract.management.dto.request.ApiSwaggerStoreRequest;
-import com.api.contract.management.dto.response.ApiContractPublishResponse;
 import com.api.contract.management.dto.response.ApiSwaggerStoreResponse;
 import com.api.contract.management.entity.ApiContract;
 import com.api.contract.management.entity.ApiContractHistory;
@@ -19,7 +17,9 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Date;
 import java.util.Optional;
 
@@ -34,13 +34,13 @@ public class ApiSwaggerStoreServiceImpl implements ApiSwaggerStoreService {
 
     @Transactional
     @Override
-    public BaseResponse execute(ApiSwaggerStoreRequest request) {
-        Date now = new Date();
+    public ApiSwaggerStoreResponse execute(ApiSwaggerStoreRequest request) {
+        Long now = Instant.now().toEpochMilli();
         Optional<ApiContract> checkApiContract = apiContractRepository.findById(request.getId());
-        if (!checkApiContract.isPresent()) {
+        if (checkApiContract.isEmpty()) {
             String message = "Api contract not found";
             throw new DataNotFoundException(message,
-                    Arrays.asList(
+                    Collections.singletonList(
                             ErrorResponse.builder()
                                     .code("404")
                                     .field("id")
@@ -55,16 +55,14 @@ public class ApiSwaggerStoreServiceImpl implements ApiSwaggerStoreService {
         return buildApiSwaggerStoreResponse(request);
     }
 
-    private BaseResponse buildApiSwaggerStoreResponse(ApiSwaggerStoreRequest request) {
+    private ApiSwaggerStoreResponse buildApiSwaggerStoreResponse(ApiSwaggerStoreRequest request) {
         ApiSwaggerStoreResponse response = new ApiSwaggerStoreResponse();
         response.setId(request.getId());
-        return BaseResponse.builder()
-                .data(response)
-                .build();
+        return response;
     }
 
 
-    private void updateApiContract(ApiSwaggerStoreRequest request,ApiContract apiContract, Date now) {
+    private void updateApiContract(ApiSwaggerStoreRequest request,ApiContract apiContract, Long now) {
         log.debug("updateApiContract");
         if (!isNewData(apiContract)) {
             log.debug("updateApiContract - not new data");
@@ -76,7 +74,7 @@ public class ApiSwaggerStoreServiceImpl implements ApiSwaggerStoreService {
         apiContractRepository.save(apiContract);
     }
 
-    private void saveApiContractHistory(ApiContract apiContract,Date now) {
+    private void saveApiContractHistory(ApiContract apiContract,Long now) {
         log.debug("saveApiContractHistory");
         if (!isNewData(apiContract)) {
             log.debug("saveApiContractHistory - not new data");

@@ -1,6 +1,6 @@
 package com.api.contract.management.base.exceptions.catcher;
 
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.base.exceptions.AbstractException;
 import com.api.contract.management.base.dto.request.BaseExceptionRequest;
 import com.api.contract.management.base.exceptions.thrower.DataValidationException;

@@ -24,6 +24,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.*;
 
 @Slf4j
@@ -38,12 +39,12 @@ public class ApiContractStoreServiceImpl implements ApiContractStoreService {
     @Transactional
     @Override
     public ApiContractStoreResponse execute(ApiContractStoreRequest request) {
-        Date now = new Date();
+        Long now = Instant.now().toEpochMilli();
         ApiContract apiContract = storeContract(request, now);
         return buildApiContractStoreResponse(apiContract);
     }
 
-    private ApiContract storeContract(ApiContractStoreRequest request, Date now) {
+    private ApiContract storeContract(ApiContractStoreRequest request, Long now) {
         ApiContract apiContract = new ApiContract();
         BeanUtils.copyProperties(request, apiContract);
         apiContract.setName(request.getContractName());

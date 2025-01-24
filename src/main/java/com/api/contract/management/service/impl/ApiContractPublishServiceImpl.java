@@ -1,25 +1,20 @@
 package com.api.contract.management.service.impl;
 
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.base.dto.response.ErrorResponse;
 import com.api.contract.management.base.exceptions.thrower.DataNotFoundException;
 import com.api.contract.management.common.enums.ApiContractStatusEnum;
 import com.api.contract.management.dto.request.ApiContractPublishRequest;
-import com.api.contract.management.dto.request.ApiSwaggerStoreRequest;
 import com.api.contract.management.dto.response.ApiContractPublishResponse;
-import com.api.contract.management.dto.response.ApiSwaggerStoreResponse;
 import com.api.contract.management.entity.ApiContract;
-import com.api.contract.management.entity.ApiContractHistory;
-import com.api.contract.management.repository.ApiContractHistoryRepository;
 import com.api.contract.management.repository.ApiContractRepository;
 import com.api.contract.management.service.contract.ApiContractPublishService;
-import com.api.contract.management.service.contract.ApiSwaggerStoreService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.BeanUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.Optional;
@@ -50,8 +45,9 @@ public class ApiContractPublishServiceImpl implements ApiContractPublishService 
         if (apiContract.getStatus().equals(ApiContractStatusEnum.PUBLISHED)) {
             return buildApiSwaggerStoreResponse(request);
         }
+        Long now = Instant.now().toEpochMilli();
         apiContract.setStatus(ApiContractStatusEnum.PUBLISHED);
-        apiContract.setUpdatedDate(new Date());
+        apiContract.setUpdatedDate(now);
         apiContract.setUpdatedBy(apiContract.getUpdatedBy());
         apiContractRepository.save(apiContract);
 

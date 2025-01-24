@@ -22,7 +22,7 @@ public class ApiSwaggerUIServiceImpl implements ApiSwaggerUIService {
     @Override
     public ApiSwaggerUIResponse execute(ApiSwaggerUIRequest request) {
         Optional<ApiContract> checkApiContract = apiContractRepository.findById(request.getId());
-        if (!checkApiContract.isPresent()) {
+        if (checkApiContract.isEmpty()) {
             return new ApiSwaggerUIResponse();
         }
         ApiContract apiContract = checkApiContract.get();

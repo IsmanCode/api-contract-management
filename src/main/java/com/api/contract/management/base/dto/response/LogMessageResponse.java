@@ -1,9 +1,9 @@
-package com.api.contract.management.base.controller.dto.response;
+package com.api.contract.management.base.dto.response;
 
 import lombok.Data;
 
 @Data
-public class LogMessage {
+public class LogMessageResponse {
 
     private int httpStatus;
 

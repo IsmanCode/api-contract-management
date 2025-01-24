@@ -14,9 +14,9 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseEntityResponse implements Serializable{
 
-    private Date createdDate;
+    private Long createdDate;
 
-    private Date updatedDate;
+    private Long updatedDate;
 
     private String createdBy;
 

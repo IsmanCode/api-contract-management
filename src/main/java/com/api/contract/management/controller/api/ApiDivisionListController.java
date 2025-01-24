@@ -1,7 +1,7 @@
 package com.api.contract.management.controller.api;
 
 import com.api.contract.management.base.command.ServiceExecutor;
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.dto.query.request.DivisionListRequest;
 import com.api.contract.management.service.query.contract.DivisionListService;
 import lombok.RequiredArgsConstructor;

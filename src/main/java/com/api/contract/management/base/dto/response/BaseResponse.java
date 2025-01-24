@@ -1,6 +1,5 @@
-package com.api.contract.management.base.controller.dto.response;
+package com.api.contract.management.base.dto.response;
 
-import com.api.contract.management.base.dto.response.ErrorResponse;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import lombok.AllArgsConstructor;
 import lombok.Builder;

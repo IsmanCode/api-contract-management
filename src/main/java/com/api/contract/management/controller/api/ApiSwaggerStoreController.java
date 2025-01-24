@@ -1,6 +1,7 @@
 package com.api.contract.management.controller.api;
 
 import com.api.contract.management.base.command.ServiceExecutor;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.common.util.ObjectMapperUtil;
 import com.api.contract.management.dto.request.ApiSwaggerStoreRequest;
 import com.api.contract.management.service.contract.ApiSwaggerStoreService;
@@ -28,6 +29,9 @@ public class ApiSwaggerStoreController {
                         .id(id)
                         .openApiSpec(map)
                 .build());
-        return ResponseEntity.ok(response);
+        return ResponseEntity.ok(BaseResponse.builder()
+                .data(response)
+                .build()
+        );
     }
 }

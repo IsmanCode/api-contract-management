@@ -1,7 +1,7 @@
 package com.api.contract.management.controller.api;
 
 import com.api.contract.management.base.command.ServiceExecutor;
-import com.api.contract.management.base.controller.dto.response.BaseResponse;
+import com.api.contract.management.base.dto.response.BaseResponse;
 import com.api.contract.management.dto.request.ApiContractStoreRequest;
 import com.api.contract.management.service.contract.ApiContractStoreService;
 import jakarta.validation.Valid;
