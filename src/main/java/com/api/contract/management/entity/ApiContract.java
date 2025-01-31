@@ -6,6 +6,7 @@ import com.api.contract.management.common.enums.ApiContractStatusEnum;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -36,6 +37,7 @@ public class ApiContract extends BaseUuidEntity {
 
     @Convert(converter = JsonConverter.class)
     @Column(name = "open_api_spec")
+    @ColumnTransformer(write = "?::jsonb")
     private Map<String, Object> openApiSpec;
 
     @Enumerated(EnumType.STRING)

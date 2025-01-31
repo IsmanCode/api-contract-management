@@ -16,14 +16,14 @@
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createDivisionModal">Create API Contract</h5>
+                    <h5 class="modal-title" id="createDivisionModal">Division Form</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
                     <form id="formDivision" name="formDivision" class="needs-validation" novalidate>
-                        <input type="hidden" id="divisionId" name="divisionId"/>
+                        <input type="hidden" id="id" name="id"/>
                         <div class="form-group">
                             <label for="name" class="col-form-label">Name: <span class="text-danger">* </span> </label><span id="nameInvalid" class="text-danger"></span>
                             <input class="form-control" id="name" name="name" aria-describedby="nameInvalid" required />
@@ -35,7 +35,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-                            <button type="button" class="btn btn-primary" onclick="divisionForm()">Create</button>
+                            <button type="button" class="btn btn-primary" onclick="divisionForm()">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -49,7 +49,7 @@
         <div class="card mb-3 pull-right" style="width: 100%;">
             <div class="card-body">
                 <div class="table-responsive">
-                    <table class="table table-hover" id="apiContractDatatable">
+                    <table class="table table-hover" id="divisionDatatable">
                         <thead>
                         <tr>
                             <th scope="col" class="text-center">Action</th>
@@ -83,14 +83,15 @@
 
         /*<![CDATA[*/
 
-        function divisionForm() {
-            let contextPath = /*[[${contextPath}]]*/'';
-            let divisionFormUrl = contextPath + '/api/division/store';
-            var formData = new FormData(document.getElementById('formDivision'));
-            let body = JSON.stringify(Object.fromEntries(formData));
+        function onRemove(divisionId) {
+            const contextPath = /*[[${contextPath}]]*/'';
+            const divisionFormUrl = contextPath + '/api/division/delete/' + divisionId;
+            let operation = 'Delete';
+            let httpMethod = 'DELETE';
+            let body = '';
             let params = {
-                title: 'Confirm Create API Contract',
-                method: 'POST',
+                title: 'Confirm '+operation+' API Contract',
+                method: httpMethod,
                 body: body,
                 urlApi: divisionFormUrl,
             }
@@ -104,8 +105,9 @@
                             title: "Success",
                             icon: "success"
                         }).then(() => {
-
-                            window.location.href = contextPath + data.uri;
+                            divisionDatatable.ajax.reload();
+                            $('#divisionFormModal').modal('hide');
+                            onCloseModal();
                         })
                     } else if (result.value.status === 400) {
                         let errors = bodyData.errors;
@@ -126,6 +128,71 @@
             });
         }
 
+        /*]]>*/
+    </script>
+
+    <script>
+
+        /*<![CDATA[*/
+
+        function divisionForm() {
+            let contextPath = /*[[${contextPath}]]*/'';
+            let divisionFormUrl = contextPath + '/api/division/store';
+            let operation = 'Create';
+            let httpMethod = 'POST';
+            if (checkDivisionId()) {
+                divisionFormUrl = contextPath + '/api/division/update';
+                operation = 'Update';
+                httpMethod = 'PUT';
+            }
+            var formData = new FormData(document.getElementById('formDivision'));
+            let body = JSON.stringify(Object.fromEntries(formData));
+            let params = {
+                title: 'Confirm '+operation+' API Contract',
+                method: httpMethod,
+                body: body,
+                urlApi: divisionFormUrl,
+            }
+            hitJsonApi(params).then(async (result) => {
+                let body = result.value;
+                let bodyData = await body.json();
+                if (result.isConfirmed) {
+                    if (result.value.status === 200 || result.value.status === 201) {
+                        let data = bodyData.data;
+                        Swal.fire({
+                            title: "Success",
+                            icon: "success"
+                        }).then(() => {
+                            divisionDatatable.ajax.reload();
+                            $('#divisionFormModal').modal('hide');
+                            onCloseModal();
+                        })
+                    } else if (result.value.status === 400) {
+                        let errors = bodyData.errors;
+                        for (const key in errors) {
+                            var error = errors[key];
+                            const field = error.field;
+                            const fieldInvalid = field + 'Invalid';
+                            const message = error.message;
+                            $('#'+fieldInvalid).text(message);
+                        }
+                    } else {
+                        Swal.fire({
+                            title: "Failed",
+                            icon: "failed"
+                        })
+                    }
+                }
+            });
+        }
+
+        /*]]>*/
+    </script>
+
+    <script>
+
+        /*<![CDATA[*/
+
         function validationForm() {
             //check form value for remove error message
             const form = document.getElementById('formDivision');
@@ -142,51 +209,17 @@
             });
         }
 
-        /*]]>*/
-    </script>
-
-    <script>
-
-        /*<![CDATA[*/
-         var confirmation = (urlApi) => {
-            Swal.fire({
-                title: "Confirm Publish API Contract",
-                showCancelButton: true,
-                confirmButtonText: "Confirm",
-                showLoaderOnConfirm: true,
-                preConfirm: async () => {
-                    try {
-                        const myHeaders = new Headers();
-                        myHeaders.append("Content-Type", "application/json");
-                        const response = await fetch(urlApi, {
-                            method: "PATCH",
-                            headers: myHeaders,
-                        });
-                        return response;
-                    } catch (error) {
-                        Swal.showValidationMessage(`
-                                    Request failed: ${error}
-                                  `);
-                    }
-                },
-                allowOutsideClick: () => !Swal.isLoading()
-            }).then((result) => {
-                if (result.isConfirmed) {
-                    if (result.value.status === 200 || result.value.status === 201) {
-                        Swal.fire({
-                            title:"Success",
-                            icon:"success"
-                        }).then(() => {
-                            apiContractDatatable.ajax.reload();
-                        })
-                    } else {
-                        Swal.fire({
-                            title:"Failed",
-                            icon:"failed"
-                        })
-                    }
-                }
+        function onCloseModal() {
+            $("#divisionFormModal").on("hidden.bs.modal", function () {
+                $('#id').val('');
+                $('#name').val('')
+                $('#title').val('')
             });
+        }
+
+        function checkDivisionId() {
+            const id = $('#id').val();
+            return !!id;
         }
 
         /*]]>*/
@@ -200,9 +233,7 @@
         let urlApi = contextPath + uriApi;
         let uri = '/division'
         let url = contextPath + uri;
-        let urlSwaggerEditor = contextPath + '/swagger-editor';
-        let publishUrl = contextPath + '/api/division/publish';
-        var apiContractDatatable = $('#apiContractDatatable').DataTable({
+        const divisionDatatable = $('#divisionDatatable').DataTable({
             "processing": true,
             "serverSide": true,
             "searching": false,
@@ -270,6 +301,7 @@
                         html += '</button>';
                         html += '<div class="dropdown-menu">';
                         html += '<button class="dropdown-item" onclick="openDivisionModal(\'' + row.id +'\',\'' + row.name+'\',\'' + row.title  + '\')">Edit</button>';
+                        html += '<button class="dropdown-item" onclick="onRemove(\'' + row.id +'\')">Delete</button>';
                         html += '<div>';
                         html += '<div>';
 
@@ -280,8 +312,9 @@
         });
 
         $(document).ready(function () {
-            apiContractDatatable.ajax.reload();
+            divisionDatatable.ajax.reload();
             validationForm();
+            onCloseModal();
         });
         /*]]>*/
     </script>
@@ -289,8 +322,7 @@
     <script>
         /*<![CDATA[*/
         var openDivisionModal = (id,name,title) => {
-            console.log("id: " + id + " name: " + name + " title: " + title);
-            $('#divisionId').val(id)
+            $('#id').val(id)
             $('#name').val(name)
             $('#title').val(title)
             $('#divisionFormModal').modal('show');

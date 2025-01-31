@@ -5,6 +5,7 @@ import com.api.contract.management.base.entity.BaseUuidEntity;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.ColumnTransformer;
 import org.hibernate.annotations.DynamicUpdate;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
@@ -35,6 +36,7 @@ public class ApiContractHistory extends BaseUuidEntity {
 
     @Convert(converter = JsonConverter.class)
     @Column(name = "open_api_spec")
+    @ColumnTransformer(write = "?::jsonb")
     private Map<String, Object> openApiSpec;
 
 }
