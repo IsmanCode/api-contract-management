@@ -16,4 +16,6 @@ public interface ProjectRepository extends BaseJpaRepository<Project, UUID> {
     List<Project> findByTeamId(UUID teamId);
 
     Optional<Project> findByIdAndTeamId(UUID id, UUID teamId);
+
+    Page<Project> findByNameLikeIgnoreCase(String search, Pageable pageable);
 }

@@ -7,12 +7,12 @@
 
     <!-- Page Heading -->
     <div class="d-sm-flex align-items-center justify-content-between mb-4">
-        <h1 class="h3 mb-0 text-gray-800">API Contract</h1>
-        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#apiContractFormModal"><i
-                class="fas fa-plus fa-sm text-white-50"></i> Create API Contract</button>
+        <h1 class="h3 mb-0 text-gray-800">Division</h1>
+        <button class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm" data-toggle="modal" data-target="#divisionFormModal"><i
+                class="fas fa-plus fa-sm text-white-50"></i> Create Division</button>
     </div>
 
-    <div class="modal fade" id="apiContractFormModal" tabindex="-1" role="dialog" aria-labelledby="createApiContractModal" aria-hidden="true">
+    <div class="modal fade" id="divisionFormModal" tabindex="-1" role="dialog" aria-labelledby="createApiContractModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
@@ -50,7 +50,7 @@
 
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal" >Close</button>
-                            <button type="button" class="btn btn-primary" onclick="apiContractForm()">Create</button>
+                            <button type="button" class="btn btn-primary" onclick="divisionForm()">Create</button>
                         </div>
                     </form>
                 </div>
@@ -98,62 +98,21 @@
 <section layout:fragment="body-end">
 
     <script th:src="@{/js/helper/hit-json-api.js}"></script>
-    <script th:src="@{/js/helper/hit-json-api-depend-option.js}"></script>
-
-    <script>
-        function getDivisionListOption() {
-            let contextPath = /*[[${contextPath}]]*/'';
-            let divisionUrl = contextPath + '/api/division/list';
-            const divisionId = document.getElementById('divisionId');
-            fetch(divisionUrl) // Endpoint untuk data pertama
-                .then(response => response.json())
-                .then(data => {
-                    data.data.forEach(item => {
-                        const option = document.createElement('option');
-                        option.value = item.id;
-                        option.textContent = item.name;
-                        divisionId.appendChild(option);
-                    });
-                });
-        }
-        function getTeamListOption() {
-            let contextPath = /*[[${contextPath}]]*/'';
-            let teamUrl = contextPath + '/api/team/list';
-            const divisionId = document.getElementById('divisionId');
-            const teamId = document.getElementById('teamId');
-            hitJsonApiDependOption({
-                firstElement: divisionId,
-                secondElement: teamId,
-                url: teamUrl
-            });
-        }
-        function getProjectListOption() {
-            let contextPath = /*[[${contextPath}]]*/'';
-            let projectUrl = contextPath + '/api/project/list';
-            const teamId = document.getElementById('teamId');
-            const projectId = document.getElementById('projectId');
-            hitJsonApiDependOption({
-                firstElement: teamId,
-                secondElement: projectId,
-                url: projectUrl
-            });
-        }
-    </script>
 
     <script>
 
         /*<![CDATA[*/
 
-        function apiContractForm() {
+        function divisionForm() {
             let contextPath = /*[[${contextPath}]]*/'';
-            let apiContractFormUrl = contextPath + '/api/api-contract/store';
+            let divisionFormUrl = contextPath + '/api/division/store';
             var formData = new FormData(document.getElementById('formApiContract'));
             let body = JSON.stringify(Object.fromEntries(formData));
             let params = {
                 title: 'Confirm Create API Contract',
                 method: 'POST',
                 body: body,
-                urlApi: apiContractFormUrl,
+                urlApi: divisionFormUrl,
             }
             hitJsonApi(params).then(async (result) => {
                 let body = result.value;
@@ -257,13 +216,12 @@
         /*<![CDATA[*/
 
         let contextPath = /*[[${contextPath}]]*/'';
-        let uriApi = '/api/api-contract/datatables';
+        let uriApi = '/api/division/datatables';
         let urlApi = contextPath + uriApi;
-        let uri = '/api-contract'
+        let uri = '/division'
         let url = contextPath + uri;
-        let urlSwagger = contextPath + '/swagger-ui';
         let urlSwaggerEditor = contextPath + '/swagger-editor';
-        let publishUrl = contextPath + '/api/api-contract/publish';
+        let publishUrl = contextPath + '/api/division/publish';
         var apiContractDatatable = $('#apiContractDatatable').DataTable({
             "processing": true,
             "serverSide": true,
@@ -294,31 +252,10 @@
                         return meta.row + meta.settings._iDisplayStart + 1;
                     }
                 },
-                {"data": "divisionTitle", "defaultContent": ""},
-                {"data": "teamTitle", "defaultContent": ""},
-                {"data": "projectTitle", "defaultContent": ""},
                 {"data": "name", "defaultContent": ""},
-                {"data": "revision", "defaultContent": ""},
-                {"data": "version", "defaultContent": ""},
-                {"data": "status", "defaultContent": ""},
-                {
-                    "data": "createdDate",
-                    render: function (data, type, row, meta) {
-                    if (data) {
-                        return new Date(data).toLocaleString();
-                    }
-                        return "";
-                    }
-                },
-                {
-                    "data": "updatedDate",
-                    render: function (data, type, row, meta) {
-                        if (data) {
-                            return new Date(data).toLocaleString();
-                        }
-                        return "";
-                    }
-                },
+                {"data": "title", "defaultContent": ""},
+                {"data": "createdDate", "defaultContent": ""},
+                {"data": "updatedDate", "defaultContent": ""},
                 {"data": "createdBy", "defaultContent": ""},
                 {"data": "updatedBy", "defaultContent": ""},
             ],
@@ -337,29 +274,12 @@
                         html += '</button>';
                         html += '<div class="dropdown-menu">';
                         html += '<a class="dropdown-item" href="'+ urlSwaggerEditor + '/' + row.id  + '">Swagger Editor</a>';
-                        html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Swagger UI</a>';
-                        html += '<a class="dropdown-item" href="'+ urlSwagger + '/' + row.id  + '">Detail</a>';
                         html += '<div>';
                         html += '<div>';
 
                         return html;
                     }
-                },
-                {
-                    "targets": 8,
-                    "data": "status",
-                    "mRender": function (data, type, row) {
-                        html = '';
-                        if (row.status === 'PUBLISHED') {
-                            html += '<button class="btn btn-success btn-sm"> Published </button>';
-                        } else {
-                            html += '<button class="btn btn-warning btn-sm" onclick="confirmation(' +'\'' + publishUrl + '/' + row.id + '\'' + ')">GoPublish</button>';
-                        }
-
-                        return html;
-                    }
-                },
-
+                }
             ]
         });
 
