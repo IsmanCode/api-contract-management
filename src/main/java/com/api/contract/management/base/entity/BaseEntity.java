@@ -15,6 +15,9 @@ import java.util.Date;
 @MappedSuperclass
 public class BaseEntity implements Serializable{
 
+    @Column(name = "DELETED")
+    private Boolean deleted;
+
     @Column(name = "CREATED_DATE")
     private Long createdDate;
 

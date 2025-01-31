@@ -301,8 +301,24 @@
                 {"data": "revision", "defaultContent": ""},
                 {"data": "version", "defaultContent": ""},
                 {"data": "status", "defaultContent": ""},
-                {"data": "createdDate", "defaultContent": ""},
-                {"data": "updatedDate", "defaultContent": ""},
+                {
+                    "data": "createdDate",
+                    render: function (data, type, row, meta) {
+                    if (data) {
+                        return new Date(data).toLocaleString();
+                    }
+                        return "";
+                    }
+                },
+                {
+                    "data": "updatedDate",
+                    render: function (data, type, row, meta) {
+                        if (data) {
+                            return new Date(data).toLocaleString();
+                        }
+                        return "";
+                    }
+                },
                 {"data": "createdBy", "defaultContent": ""},
                 {"data": "updatedBy", "defaultContent": ""},
             ],

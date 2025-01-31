@@ -4,6 +4,9 @@ import com.api.contract.management.dto.datatable.DataTableRequest;
 import com.api.contract.management.dto.datatable.DataTableResults;
 import com.api.contract.management.dto.response.ApiContractDatatableResponse;
 import com.api.contract.management.entity.ApiContract;
+import com.api.contract.management.entity.Division;
+import com.api.contract.management.entity.Project;
+import com.api.contract.management.entity.Team;
 import com.api.contract.management.repository.ApiContractRepository;
 import com.api.contract.management.service.contract.ApiContractDatatablesService;
 import lombok.RequiredArgsConstructor;
@@ -16,6 +19,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -57,9 +61,15 @@ public class ApiContractDatatablesServiceImpl implements ApiContractDatatablesSe
                     ApiContractDatatableResponse response = new ApiContractDatatableResponse();
                     BeanUtils.copyProperties(data,response);
                     response.setId(data.getId());
-                    response.setDivisionTitle(data.getProject().getTeam().getDivision().getTitle());
-                    response.setTeamTitle(data.getProject().getTeam().getTitle());
-                    response.setProjectTitle(data.getProject().getTitle());
+                    String divisionTitle = Optional.ofNullable(data.getProject())
+                            .map(Project::getTeam).map(Team::getDivision).map(Division::getTitle).orElse("");
+                    response.setDivisionTitle(divisionTitle);
+                    String teamTitle = Optional.ofNullable(data.getProject())
+                            .map(Project::getTeam).map(Team::getTitle).orElse("");
+                    response.setTeamTitle(teamTitle);
+                    String projectTitle = Optional.ofNullable(data.getProject())
+                            .map(Project::getTitle).orElse("");
+                    response.setProjectTitle(projectTitle);
                     response.setStatus(data.getStatus());
                     response.setCreatedDate(data.getCreatedDate());
                     response.setUpdatedDate(data.getUpdatedDate());
