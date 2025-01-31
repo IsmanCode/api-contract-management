@@ -12,40 +12,25 @@
                 class="fas fa-plus fa-sm text-white-50"></i> Create Division</button>
     </div>
 
-    <div class="modal fade" id="divisionFormModal" tabindex="-1" role="dialog" aria-labelledby="createApiContractModal" aria-hidden="true">
+    <div class="modal fade" id="divisionFormModal" tabindex="-1" role="dialog" aria-labelledby="createDivisionModal" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="createApiContractModal">Create API Contract</h5>
+                    <h5 class="modal-title" id="createDivisionModal">Create API Contract</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form id="formApiContract" name="formApiContract" class="needs-validation" novalidate>
+                    <form id="formDivision" name="formDivision" class="needs-validation" novalidate>
+                        <input type="hidden" id="divisionId" name="divisionId"/>
                         <div class="form-group">
-                            <label for="divisionId" class="col-form-label">Division: <span class="text-danger">* </span> </label><span id="divisionIdInvalid" class="text-danger"></span>
-                            <select id="divisionId" name="divisionId" class="form-control" required>
-                                <option value="">Select an option</option>
-                            </select>
+                            <label for="name" class="col-form-label">Name: <span class="text-danger">* </span> </label><span id="nameInvalid" class="text-danger"></span>
+                            <input class="form-control" id="name" name="name" aria-describedby="nameInvalid" required />
                         </div>
                         <div class="form-group">
-                            <label for="teamId" class="col-form-label">Team: <span class="text-danger">* </span> </label> <span id="teamIdInvalid" class="text-danger"></span>
-                            <select id="teamId" name="teamId" class="form-control" required>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="projectId" class="col-form-label">Project: <span class="text-danger">* </span> </label><span id="projectIdInvalid" class="text-danger"></span>
-                            <select id="projectId" name="projectId" class="form-control" required>
-                            </select>
-                        </div>
-                        <div class="form-group">
-                            <label for="contractName" class="col-form-label">Contract Name: <span class="text-danger">* </span> </label><span id="contractNameInvalid" class="text-danger"></span>
-                            <input class="form-control" id="contractName" name="contractName" aria-describedby="contractInvalid" required />
-                        </div>
-                        <div class="form-group">
-                            <label for="version" class="col-form-label">Version: <span class="text-danger">* </span> </label> <span  id="versionInvalid" class="text-danger"></span>
-                            <input class="form-control" id="version" name="version" aria-describedby="versionInvalid" required/>
+                            <label for="title" class="col-form-label">Title: <span class="text-danger">* </span> </label><span id="titleInvalid" class="text-danger"></span>
+                            <input class="form-control" id="title" name="title" aria-describedby="titleInvalid" required />
                         </div>
 
                         <div class="modal-footer">
@@ -61,7 +46,7 @@
     <!-- Content Row -->
     <div class="row">
         <!-- DataTables Example -->
-        <div class="card mb-3 pull-right">
+        <div class="card mb-3 pull-right" style="width: 100%;">
             <div class="card-body">
                 <div class="table-responsive">
                     <table class="table table-hover" id="apiContractDatatable">
@@ -69,13 +54,8 @@
                         <tr>
                             <th scope="col" class="text-center">Action</th>
                             <th scope="col" class="text-center">No</th>
-                            <th scope="col" class="text-center">Division</th>
-                            <th scope="col" class="text-center">Team</th>
-                            <th scope="col" class="text-center">Project</th>
                             <th scope="col" class="text-center">Name</th>
-                            <th scope="col" class="text-center">Revision</th>
-                            <th scope="col" class="text-center">Version</th>
-                            <th scope="col" class="text-center">Status</th>
+                            <th scope="col" class="text-center">Title</th>
                             <th scope="col" class="text-center">Create At</th>
                             <th scope="col" class="text-center">Updated At</th>
                             <th scope="col" class="text-center">Create By</th>
@@ -106,7 +86,7 @@
         function divisionForm() {
             let contextPath = /*[[${contextPath}]]*/'';
             let divisionFormUrl = contextPath + '/api/division/store';
-            var formData = new FormData(document.getElementById('formApiContract'));
+            var formData = new FormData(document.getElementById('formDivision'));
             let body = JSON.stringify(Object.fromEntries(formData));
             let params = {
                 title: 'Confirm Create API Contract',
@@ -148,7 +128,7 @@
 
         function validationForm() {
             //check form value for remove error message
-            const form = document.getElementById('formApiContract');
+            const form = document.getElementById('formDivision');
             form.addEventListener('change', function(event) {
                 const target = event.target;
                 const field = target.id;
@@ -254,8 +234,24 @@
                 },
                 {"data": "name", "defaultContent": ""},
                 {"data": "title", "defaultContent": ""},
-                {"data": "createdDate", "defaultContent": ""},
-                {"data": "updatedDate", "defaultContent": ""},
+                {
+                    "data": "createdDate",
+                    render: function (data, type, row, meta) {
+                        if (data) {
+                            return new Date(data).toLocaleString();
+                        }
+                        return "";
+                    }
+                },
+                {
+                    "data": "updatedDate",
+                    render: function (data, type, row, meta) {
+                        if (data) {
+                            return new Date(data).toLocaleString();
+                        }
+                        return "";
+                    }
+                },
                 {"data": "createdBy", "defaultContent": ""},
                 {"data": "updatedBy", "defaultContent": ""},
             ],
@@ -273,7 +269,7 @@
                         html += '<i class="fa fa-bars" aria-hidden="true"></i>';
                         html += '</button>';
                         html += '<div class="dropdown-menu">';
-                        html += '<a class="dropdown-item" href="'+ urlSwaggerEditor + '/' + row.id  + '">Swagger Editor</a>';
+                        html += '<button class="dropdown-item" onclick="openDivisionModal(\'' + row.id +'\',\'' + row.name+'\',\'' + row.title  + '\')">Edit</button>';
                         html += '<div>';
                         html += '<div>';
 
@@ -286,10 +282,19 @@
         $(document).ready(function () {
             apiContractDatatable.ajax.reload();
             validationForm();
-            getDivisionListOption();
-            getTeamListOption();
-            getProjectListOption();
         });
+        /*]]>*/
+    </script>
+
+    <script>
+        /*<![CDATA[*/
+        var openDivisionModal = (id,name,title) => {
+            console.log("id: " + id + " name: " + name + " title: " + title);
+            $('#divisionId').val(id)
+            $('#name').val(name)
+            $('#title').val(title)
+            $('#divisionFormModal').modal('show');
+        }
         /*]]>*/
     </script>
 </section>
