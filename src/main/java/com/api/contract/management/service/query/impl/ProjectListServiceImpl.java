@@ -16,24 +16,29 @@ import java.util.List;
 @RequiredArgsConstructor
 public class ProjectListServiceImpl implements ProjectListService {
 
-    private final ProjectRepository teamRepository;
+    private final ProjectRepository projectRepository;
 
     @Override
     public List<ProjectResponse> execute(ProjectListRequest request) {
 
-        List<Project> teams = teamRepository.findByTeamId(request.getTeamId());
+        List<Project> projects;
+        if (request.getProjectId() != null) {
+            projects = projectRepository.findByTeamId(request.getProjectId());
+        } else {
+            projects = projectRepository.findAll();
+        }
 
-        return buildResponse(teams);
+        return buildResponse(projects);
     }
 
-    private List<ProjectResponse> buildResponse(List<Project> teams) {
-        return teams.stream()
-                .map(team -> ProjectResponse.builder()
-                        .id(team.getId())
-                        .teamId(team.getTeam().getId())
-                        .name(team.getName())
-                        .title(team.getTitle())
-                        .entity(team)
+    private List<ProjectResponse> buildResponse(List<Project> projects) {
+        return projects.stream()
+                .map(project -> ProjectResponse.builder()
+                        .id(project.getId())
+                        .teamId(project.getTeam().getId())
+                        .name(project.getName())
+                        .title(project.getTitle())
+                        .entity(project)
                         .build())
                 .toList();
     }

@@ -7,11 +7,9 @@ import com.api.contract.management.service.query.contract.ProjectListService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -22,11 +20,15 @@ public class ApiProjectListController {
 
     private final ServiceExecutor serviceExecutor;
 
-    @GetMapping(value = "/project/list/{teamId}")
-    public ResponseEntity doExecute(@PathVariable("teamId") String teamId) {
+    @GetMapping(value = "/project/list")
+    public ResponseEntity doExecute(@RequestParam(value = "teamId",required = false) String teamId) {
 
         var response = serviceExecutor.execute(ProjectListService.class, ProjectListRequest.builder()
-                        .teamId(UUID.fromString(teamId))
+                        .projectId(
+                                Optional.ofNullable(teamId)
+                                        .map(UUID::fromString)
+                                        .orElse(null)
+                        )
                 .build());
         return ResponseEntity.ok(BaseResponse
                 .builder()

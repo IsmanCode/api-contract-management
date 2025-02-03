@@ -16,7 +16,6 @@ import java.util.UUID;
 @Builder
 public class ApiTeamStoreRequest implements ServiceRequest {
     @NotNull(message = "This Field is required")
-    @NotBlank(message = "This Field is required")
     private UUID divisionId;
     @NotNull(message = "This Field is required")
     @NotBlank(message = "This Field is required")

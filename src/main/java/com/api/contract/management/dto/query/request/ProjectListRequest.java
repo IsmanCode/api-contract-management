@@ -13,5 +13,5 @@ import java.util.UUID;
 @NoArgsConstructor
 @Builder
 public class ProjectListRequest implements ServiceRequest {
-    private UUID teamId;
+    private UUID projectId;
 }

@@ -19,7 +19,6 @@ public class ApiTeamUpdateRequest implements ServiceRequest {
     private UUID id;
 
     @NotNull(message = "This Field is required")
-    @NotBlank(message = "This Field is required")
     private UUID divisionId;
 
     @NotNull(message = "This Field is required")

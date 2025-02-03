@@ -9,7 +9,9 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -21,7 +23,12 @@ public class TeamListServiceImpl implements TeamListService {
     @Override
     public List<TeamResponse> execute(TeamListRequest request) {
 
-        List<Team> teams = teamRepository.findByDivisionId(request.getDivisionId());
+        List<Team> teams;
+        if (request.getDivisionId() != null) {
+            teams = teamRepository.findByDivisionId(request.getDivisionId());
+        } else {
+            teams = teamRepository.findAll();
+        }
 
         return buildResponse(teams);
     }

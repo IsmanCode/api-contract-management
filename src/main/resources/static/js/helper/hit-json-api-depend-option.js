@@ -2,7 +2,7 @@ function hitJsonApiDependOption (request) {
     request.firstElement.addEventListener('change', function() {
         const selectedId = this.value;
 
-        fetch(request.url+`/${selectedId}`) // Endpoint untuk data kedua
+        fetch(request.url + selectedId) // Endpoint untuk data kedua
             .then(response => response.json())
             .then(data => {
                 request.secondElement.innerHTML = '<option value="">Select an option</option>';

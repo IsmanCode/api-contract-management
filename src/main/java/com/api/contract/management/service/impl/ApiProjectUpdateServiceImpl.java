@@ -58,7 +58,7 @@ public class ApiProjectUpdateServiceImpl implements ApiProjectUpdateService {
 
     private Project getProject(ApiProjectUpdateRequest request) {
         return serviceExecutor.execute(ProjectFindByIdService.class, UniqueRequest.<UUID>builder()
-                .value(request.getTeamId())
+                .value(request.getId())
                 .build()).getEntity();
     }
 

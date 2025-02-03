@@ -2,7 +2,6 @@ package com.api.contract.management.service.impl;
 
 import com.api.contract.management.base.command.ServiceExecutor;
 import com.api.contract.management.base.dto.request.UniqueRequest;
-import com.api.contract.management.dto.request.ApiTeamStoreRequest;
 import com.api.contract.management.dto.request.ApiTeamUpdateRequest;
 import com.api.contract.management.dto.response.TeamResponse;
 import com.api.contract.management.entity.Division;
@@ -64,7 +63,7 @@ public class ApiTeamUpdateServiceImpl implements ApiTeamUpdateService {
 
     private Team getTeam(ApiTeamUpdateRequest request) {
         return serviceExecutor.execute(TeamFindByIdService.class, UniqueRequest.<UUID>builder()
-                .value(request.getDivisionId())
+                .value(request.getId())
                 .build()).getEntity();
     }
 
